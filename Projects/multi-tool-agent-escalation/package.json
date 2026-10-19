@@ -1,0 +1,14 @@
+{
+  "name": "multi-tool-agent-escalation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-tool support agent (Northbrook Financial) with code-enforced refund escalation.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/",
+    "demo": "node scripts/demo.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0"
+  }
+}

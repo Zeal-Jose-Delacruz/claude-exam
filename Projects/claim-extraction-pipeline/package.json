@@ -1,0 +1,24 @@
+{
+  "name": "claim-extraction-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Structured extraction pipeline for Meridian Mutual scanned auto-insurance claim forms.",
+  "type": "module",
+  "scripts": {
+    "step1": "node scripts/step1-schema.js",
+    "step2": "node scripts/step2-null-fields.js",
+    "step3": "node scripts/step3-validation-retry.js",
+    "step4": "node scripts/step4-retry-classification.js",
+    "step5": "node scripts/step5-few-shot.js",
+    "step6": "node scripts/step6-batch-request.js",
+    "step7": "node scripts/step7-batch-resubmit.js",
+    "step8": "node scripts/step8-sla.js",
+    "step9": "node scripts/step9-confidence-routing.js",
+    "step10": "node scripts/step10-accuracy-breakdown.js",
+    "all": "node scripts/run-all.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0"
+  }
+}
