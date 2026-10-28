@@ -17,7 +17,7 @@ study/
   site.html             interactive study site (domain browser, pattern gallery, 12-question drill)
 ```
 
-The live published version is https://claude.ai/artifact/GFweZyVndMCh8wJR5XDnDy (a Claude Artifact — if this link ever goes stale, regenerate by re-publishing `study/site.html`, or ask for `action: "list"` to find it). It renders the domain weights, the hidden-patterns gallery, an "Understanding dashboard" ranking every tested principle red→green by net score, and a shuffled, stats-aware quiz drill — all per-browser via localStorage.
+The live published version is https://claude.ai/artifact/RBR6kkXudNxRAMKdEpka8i (a Claude Artifact — if this link ever goes stale, regenerate by re-publishing `study/site.html`, or ask for `action: "list"` to find it). It renders the domain weights, the hidden-patterns gallery, an "Understanding dashboard" ranking every tested principle red→green by net score, and a shuffled, stats-aware quiz drill — all per-browser via localStorage.
 
 ## Your role in this repo
 
@@ -32,6 +32,17 @@ Act as an expert Claude Architect instructor coaching the user toward the exam's
 
 ## Working with the website
 
-`study/site.html` is a self-contained Artifact (inline CSS/JS, Google Fonts for type, no build step). To change it: edit the file directly, then re-publish via the Artifact tool using the same file path (or pass `url: "https://claude.ai/artifact/GFweZyVndMCh8wJR5XDnDy"` from a different conversation) to update the existing live URL rather than creating a new one. Its three data arrays (`DOMAINS`, `PATTERNS`, `QUIZ`) are the entire content model — extending the quiz bank or adding a new domain means editing those arrays, not the markup.
+`study/site.html` is a self-contained Artifact (inline CSS/JS, Google Fonts for type, no build step). To change it: edit the file directly, then re-publish via the Artifact tool using the same file path (or pass `url: "https://claude.ai/artifact/RBR6kkXudNxRAMKdEpka8i"` from a different conversation) to update the existing live URL rather than creating a new one. Its three data arrays (`DOMAINS`, `PATTERNS`, `QUIZ`) are the entire content model — extending the quiz bank or adding a new domain means editing those arrays, not the markup.
 
 Every `QUIZ` item carries a `ref` (`{type:'pattern', idx}` into `PATTERNS`, or `{type:'task', domainIdx, taskIdx}` into `DOMAINS`) — this is what drives the wrong-answer "you missed" callout, the jump-to-source scrolling, and the dashboard's per-principle aggregation. Adding a quiz question means adding a correct `ref`, not just a `pattern` label string. The 8 pattern-mapped items additionally carry an optional `relatedTask:{domainIdx, taskIdx}` — a visible, clickable cross-reference to the one specific exam task statement that question's scenario matches most closely. This is display/navigation only: it does **not** affect `qstats` or the dashboard aggregation (only a question's primary `ref` is scored) — don't wire it into scoring without the user asking, that was a deliberate choice. Each `DOMAINS` entry also carries a `num` (its real domain number, 1–5, per `study/content-outline.md`) — the array itself is ordered by exam weight, not domain number, so `num` is what the UI's "D#" chip renders from; never rely on array position (`di`) for a domain number. The quiz keeps two separate persisted stores in localStorage: `acf-quiz-qstats` (cumulative right/wrong counts per question, forever — drives the dashboard and the shuffle weighting) and `acf-quiz-run` (the current shuffled order/lock-state, reset only by "Shuffle & restart"). Don't conflate the two when editing — a fresh shuffle should never wipe cumulative stats, only "Reset stats" does that.
+
+### English / Spanish (i18n)
+
+The site is bilingual via an EN/ES switch in the header (stored in localStorage as `acf-lang`; first visit defaults to the browser language). The English arrays stay the source of record. Spanish lives in the `// ---- i18n (EN/ES) ----` block right after `GLOSSARY_QUIZ_IDS`:
+
+- `I18N_ES` — a flat overlay of translated strings keyed by **path into the English arrays** (e.g. `"QUIZ.3.opts.2"`, `"DOMAINS.0.tasks.1.blurb"`). It's applied only after `QUIZ_IDS`/`GLOSSARY_QUIZ_IDS` are computed, so stats keys stay English and switching language never touches stats. Any path without a translation simply renders in English.
+- `UI_ES` (looked up via `tr('English string')`), `STATIC_ES` (selector → Spanish innerHTML for the static markup) and `ATTRS_ES` cover the interface chrome.
+- `GLOSSARY_QUIZ` isn't translated directly — in Spanish mode its question/options/explanation are rebuilt from the translated `GLOSSARY` definitions.
+- Deliberately kept in English: code snippets, tool/field/flag names, glossary terms and categories, exam scenario names, and core exam vocabulary (agentic loop, subagent, hook, tool, system prompt, few-shot, schema, etc.) so the Spanish reads naturally but the terms match the English-language exam.
+
+Because overlay keys are positional, **append** new `QUIZ`/`GLOSSARY`/task items rather than inserting mid-array (inserting shifts every later path and mis-assigns Spanish text); after any content edit, add the matching `I18N_ES` entries for the new or changed strings.

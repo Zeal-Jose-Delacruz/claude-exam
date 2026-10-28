@@ -6,7 +6,7 @@ This is not a software project — there's no build or test step. The source of 
 
 ## Where to start
 
-- **[study/site.html](study/site.html)** — the interactive study site (also published live as a [Claude Artifact](https://claude.ai/artifact/GFweZyVndMCh8wJR5XDnDy)). Domain browser, pattern gallery, and a shuffled 12-question quiz drill with a per-principle understanding dashboard, all tracked per-browser via `localStorage`. Easiest way to actually study this material — open it in a browser rather than reading the markdown below.
+- **[study/site.html](study/site.html)** — the interactive study site (also published live as a [Claude Artifact](https://claude.ai/artifact/RBR6kkXudNxRAMKdEpka8i)). Domain browser, pattern gallery, and a shuffled 12-question quiz drill with a per-principle understanding dashboard, all tracked per-browser via `localStorage`. Easiest way to actually study this material — open it in a browser rather than reading the markdown below.
 - **[study/hidden-patterns.md](study/hidden-patterns.md)** — read this before the others. The exam is scenario-based and judgment-based, not recall-based: it rewards the same ~10 tradeoff shapes over and over (deterministic enforcement over probabilistic compliance, scoped least-privilege tool access, structured error signals, root-cause attribution from logs, etc.). This file names each pattern and ties it back to the sample questions that test it.
 
 ## Repo layout
